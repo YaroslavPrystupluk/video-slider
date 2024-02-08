@@ -18,3 +18,17 @@
 	color: #fff
 }
 
+.thumbnai {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.swiper-button-prev,
+.swiper-button-next{
+	color: #fff;
+}
+
+.swiper-pagination-bullet {
+	background: #fff;
+}
