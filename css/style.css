@@ -32,3 +32,19 @@
 .swiper-pagination-bullet {
 	background: #fff;
 }
+
+.modal-content{
+	background-color: #000;
+}
+
+.modal-header {
+display: flex;
+justify-content: end;
+}
+
+ #vimeo-player {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}

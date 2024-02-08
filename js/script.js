@@ -1,4 +1,6 @@
 const video = document.querySelector("#vimeo-player");
+const TOKEN = "9338e757510aad82573d9bd596e6931e";
+const videoId = "824804225";
 
 const swiper = new Swiper(".swiper", {
   direction: "horizontal",
@@ -19,9 +21,9 @@ const swiper = new Swiper(".swiper", {
 
 const getPathVideoMiniature = async () => {
   try {
-    const response = await fetch("https://api.vimeo.com/videos/824804225", {
+    const response = await fetch(`https://api.vimeo.com/videos/${videoId}`, {
       headers: {
-        Authorization: "Bearer 9338e757510aad82573d9bd596e6931e",
+        Authorization: `Bearer ${TOKEN}`,
         Accept: "application/vnd.vimeo.*+json;version=3.4",
         "Content-Type": "image/jpeg, image/png, image/gif",
       },
@@ -37,7 +39,7 @@ const getPathVideoMiniature = async () => {
     imgs.forEach((img) => (img.src = avatarUrl));
 
     return urlVideoMiniature;
-	 
+
   } catch (error) {
     console.error("Error fetching video thumbnail:", error);
     return null;
