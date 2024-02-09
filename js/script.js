@@ -10,7 +10,7 @@ const swiper = new Swiper(".swiper", {
   spaceBetween: 1,
 
   pagination: {
-    el: ".swiper-pagination",
+    el: ".swiper-pagination-main",
   },
 
   navigation: {
@@ -47,11 +47,8 @@ const getPathVideoMiniature = async () => {
 
 const getUrlVideo = async () => {
   const urlVideo = await getPathVideoMiniature();
-  const player = iniVideoPlayer(urlVideo.link);
-
-  iniVideoPlayer(urlVideo.link);
-  setAtrVimeoUrl(urlVideo.link, video);
-  btnClose(player, video);
+  startVideoPlayer(urlVideo.link, video);
+  btnClose(urlVideo.link, video);
 };
 getUrlVideo();
 
@@ -60,22 +57,24 @@ const iniVideoPlayer = (url) => {
     url,
     width: 550,
     autoplay: true,
-    loop: false,
+
   });
   return player;
 };
 
-const btnClose = (player, video) => {
+const btnClose = (url, video) => {
   document.querySelector(".btn-close").addEventListener("click", () => {
+    const player = iniVideoPlayer(url);
     video.removeAttribute("data-vimeo-url");
-    player.pause();
+    player.destroy();
   });
 };
 
-const setAtrVimeoUrl = (url, video) => {
+const startVideoPlayer = (url, video) => {
   document.querySelectorAll(".swiper-slide").forEach(function (element) {
     element.addEventListener("click", function () {
       video.setAttribute("data-vimeo-url", url);
+      iniVideoPlayer(url);
     });
   });
 };
