@@ -39,7 +39,6 @@ const getPathVideoMiniature = async () => {
     imgs.forEach((img) => (img.src = avatarUrl));
 
     return urlVideoMiniature;
-
   } catch (error) {
     console.error("Error fetching video thumbnail:", error);
     return null;
@@ -59,7 +58,7 @@ getUrlVideo();
 const iniVideoPlayer = (url) => {
   const player = new Vimeo.Player("vimeo-player", {
     url,
-    width: 640,
+    width: 550,
     autoplay: true,
     loop: false,
   });
@@ -74,9 +73,9 @@ const btnClose = (player, video) => {
 };
 
 const setAtrVimeoUrl = (url, video) => {
-document.querySelectorAll(".swiper-slide").forEach(function (element) {
-  element.addEventListener("click", function () {
-    video.setAttribute("data-vimeo-url", url);
+  document.querySelectorAll(".swiper-slide").forEach(function (element) {
+    element.addEventListener("click", function () {
+      video.setAttribute("data-vimeo-url", url);
+    });
   });
-});
 };
