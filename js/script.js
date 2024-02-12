@@ -51,11 +51,26 @@ const getPathVideoMiniature = async () => {
 };
 
 const getUrlVideo = async () => {
-await getPathVideoMiniature();
-  
+  await getPathVideoMiniature();
   paginations(video);
 };
 getUrlVideo();
+
+const activBtnPag = async () => {
+  const buttonsPag = document.querySelectorAll(".pagination-item");
+  buttonsPag.forEach((buttonPag) => {
+    buttonPag.addEventListener("click", async () => {
+      buttonsPag.forEach((btn) => {
+        btn.disabled = false;
+        btn.style.cursor = "pointer";
+        btn.style.background = "grey";
+      });
+      buttonPag.disabled = true;
+      buttonPag.style.cursor = "auto";
+      buttonPag.style.background = "white";
+    });
+  });
+};
 
 const createPaginations = (url) => {
   const totalSlides = swiper.slides.length;
@@ -66,31 +81,39 @@ const createPaginations = (url) => {
     const paginationItem = document.createElement("button");
     paginationItem.classList.add("pagination-item");
     paginationItem.setAttribute("data-path", url);
-	 paginationItem.setAttribute("data-num-pag", i + 1);
+    paginationItem.setAttribute("data-num-pag", i + 1);
     pagination.append(paginationItem);
   }
 };
 
-const activeVideo = () => {
-  images.forEach((img, i) => {
-    img.setAttribute("data-num-slide", i + 1);
-    img.addEventListener("click", (event) => {
-      const urlTarget = event.target.getAttribute("data-num-slide");
-      const buttonsPag = document.querySelectorAll(".pagination-item");
-      buttonsPag.forEach((buttonPag) => {
-        const buttonUrl = buttonPag.getAttribute("data-num-pag");
-        if (buttonUrl === urlTarget) {
-          buttonPag.disabled = true;
-          buttonPag.style.cursor = "auto";
-          buttonPag.style.background = "white";
-        } else {
-          buttonPag.disabled = false;
-          buttonPag.style.cursor = "pointer";
-          buttonPag.style.background = "grey";
-        }
-      });
+const handleImageClick = (img, i) => {
+  img.setAttribute("data-num-slide", i + 1);
+  img.addEventListener("click", (event) => {
+    const urlTarget = event.target.getAttribute("data-num-slide");
+    const buttonsPag = document.querySelectorAll(".pagination-item");
+    buttonsPag.forEach((buttonPag) => {
+      const buttonUrl = buttonPag.getAttribute("data-num-pag");
+      if (buttonUrl === urlTarget) {
+        buttonPag.disabled = true;
+        buttonPag.style.cursor = "auto";
+        buttonPag.style.background = "white";
+      } else {
+        buttonPag.disabled = false;
+        buttonPag.style.cursor = "pointer";
+        buttonPag.style.background = "grey";
+      }
     });
   });
+};
+
+const setupImageClickEvents = () => {
+  images.forEach((img, i) => {
+    handleImageClick(img, i);
+  });
+};
+
+const activeVideo = () => {
+  setupImageClickEvents();
 };
 activeVideo();
 
@@ -122,27 +145,33 @@ const startVideoPlayer = (video) => {
 };
 startVideoPlayer(video);
 
-const paginations = (video) => {
+const handlePaginationButtonClick = async (buttonPag, video) => {
+  const buttonsPag = document.querySelectorAll(".pagination-item");
+  buttonsPag.forEach((btn) => {
+    btn.disabled = btn === buttonPag;
+        btn.style.cursor = btn === buttonPag ? "auto" : "pointer";
+        btn.style.background = btn === buttonPag ? "white" : "grey";
+      });
+  video.removeAttribute("data-vimeo-url");
+  const newUrl = buttonPag.getAttribute("data-path");
+  const player = await iniVideoPlayer();
+  await player.destroy().then(() => {
+    video.setAttribute("data-vimeo-url", newUrl);
+    startVideoPlayer(video);
+    iniVideoPlayer();
+  });
+};
+
+const setupPaginationButtons = (video) => {
   const buttonsPag = document.querySelectorAll(".pagination-item");
   buttonsPag.forEach((buttonPag) => {
-    buttonPag.addEventListener("click", async () => {
-        buttonsPag.forEach((btn) => {
-          btn.disabled = false;
-          btn.style.cursor = "pointer";
-          btn.style.background = "grey";
-        });
-        buttonPag.disabled = true;
-        buttonPag.style.cursor = "auto";
-        buttonPag.style.background = "white";
-      video.removeAttribute("data-vimeo-url");
-      const newUrl = buttonPag.getAttribute("data-path");
-      const player = await iniVideoPlayer();
-      await player.destroy().then(() => {
-        video.setAttribute("data-vimeo-url", newUrl);
-        startVideoPlayer(video);
-        iniVideoPlayer();
-      });
-    });
+    buttonPag.addEventListener("click", () =>
+      handlePaginationButtonClick(buttonPag, video)
+    );
   });
+};
+
+const paginations = (video) => {
+  setupPaginationButtons(video);
 };
 paginations(video);
