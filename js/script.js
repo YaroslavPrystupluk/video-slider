@@ -58,11 +58,11 @@ getUrlVideo();
 
 const createPaginations = (url) => {
   const totalSlides = swiper.slides.length;
-  const pagination = document.createElement("ul");
+  const pagination = document.createElement("div");
   pagination.classList.add("pagination-wrapper");
   container.append(pagination);
   for (let i = 0; i < totalSlides; i++) {
-    const paginationItem = document.createElement("li");
+    const paginationItem = document.createElement("button");
     paginationItem.classList.add("pagination-item");
     paginationItem.setAttribute("data-path", url);
     pagination.append(paginationItem);
@@ -101,6 +101,16 @@ const paginations = (video) => {
   const buttonsPag = document.querySelectorAll(".pagination-item");
   buttonsPag.forEach((buttonPag) => {
     buttonPag.addEventListener("click", async () => {
+      if (!buttonPag.classList.contains("active")) {
+        buttonsPag.forEach((btn) => {
+          btn.disabled = false;
+			 btn.style.cursor = "pointer";
+			 btn.style.background = "grey";
+        });
+        buttonPag.disabled = true;
+		  buttonPag.style.cursor = "auto";
+		  buttonPag.style.background = "white";
+      }
       video.removeAttribute("data-vimeo-url");
       const newUrl = buttonPag.getAttribute("data-path");
       const player = await iniVideoPlayer();

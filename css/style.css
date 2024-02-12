@@ -15,6 +15,7 @@
 }
 
 .swiper-slide {
+	cursor: pointer;
 	background-color: #000;
 	color: #fff
 }
@@ -54,8 +55,21 @@
 
 .pagination-wrapper{
 	display: flex;
+	gap: 15px;
+	justify-content: center;
+	list-style-type: none;
+	position: absolute;
+	left: 50%;
+	bottom: 15px;
+	transform: translate(-50%);
 }
 
-li{
-	cursor: pointer;
-}
+.pagination-item{
+	width: 8px;
+	height: 8px;
+	outline: none;
+	border: none;
+	border-radius: 50px;
+	background-color: grey;
+	
+};
